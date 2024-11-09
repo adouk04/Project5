@@ -66,6 +66,19 @@ public class LostPuppy {
         return new int[][]{startLocation, endLocation};
     }
 
+    public boolean canMove(char[][] maze, int row, int col) {
+        boolean validMove = false;
+
+        if (row >= 0 && col >= 0 &&
+                row < maze.length && col < maze[row].length) {
+            if (maze[row][col] == ' ') {
+                validMove = true;
+            }
+        }
+
+        return validMove;
+    }
+
     public boolean doMaze (char[][] maze, int row, int col) {
         //calls the starting position and maze
         //call south first
