@@ -5,8 +5,9 @@ public class LostPuppy {
     public static void main(String[] args) {
         try {
             Scanner console = new Scanner(System.in);
-            Scanner input = new Scanner(new File("MazeData3.txt"));
+            Scanner input = new Scanner(new File("MazeData2.txt"));
             char[][] maze = getMaze(input);
+            displayMaze(maze);
             console.close();
         } catch (FileNotFoundException e) {
             System.out.print("File not found");
@@ -15,36 +16,54 @@ public class LostPuppy {
     }
 
     public static char[][] getMaze(Scanner input) {
-        char walls = 'X';
-        char start = 'S';
-        char end = 'E';
-        char open = ' ';
+        List<String> lines = new ArrayList<>();
 
-        //gets the width and length of maze
-        String firstLine = input.nextLine();
-        int width = firstLine.length();
-        int length = 1;
         while (input.hasNextLine()) {
-            length++;
-            input.nextLine();
+            String line = input.nextLine();
+            lines.add(line);
         }
-        // Create a new Scanner to start reading again
-        // Reset the scanner (input) by re-initializing it (assuming you can do this)
-        // or use another method to read input in a single pass
-        // For this example, assume we can pass a new Scanner (for demonstration):
-        //test to repo
-        Scanner input2 = new Scanner(firstLine + "\n" + input);  // Replace this with proper input
-        char[][] myMaze = new char[width][length];
 
-        //fills mae
-        for (int row = 0; row < myMaze.length; row++) {
-            String line = input2.nextLine();
-            for (int col = 0; col < myMaze[row].length; col++) {
+        int width = lines.get(0).length();
+        int length = lines.size();
+        input.close();
+
+        char[][] myMaze = new char[length][width];
+
+        for (int row = 0; row < length; row++) {
+            String line = lines.get(row);
+            for (int col = 0; col < width; col++) {
                 myMaze[row][col] = line.charAt(col);
             }
         }
-
         return myMaze;
+    }
+
+    public static void displayMaze(char[][] myMaze) {
+        for (int row = 0; row < myMaze.length; row++) {
+            for (int col = 0; col < myMaze[row].length; col++) {
+                System.out.print(myMaze[row][col]);
+            }
+            System.out.println();
+        }
+    }
+
+    public int[][] getStartExitLocation(char[][] maze) {
+        int[] startLocation = null;
+        int[] endLocation = null;
+
+        for (int row = 0; row < maze.length; row++) {
+            for (int col = 0; col < maze[row].length; col++) {
+                if (maze[row][col] == 'S') {
+                    startLocation = new int[]{row, col};
+                    maze[row][col] = '*';
+                }
+                else if (maze[row][col] == 'E') {
+                    endLocation = new int[]{row, col};
+                    maze[row][col] = ' ';
+                }
+            }
+        }
+        return new int[][]{startLocation, endLocation};
     }
 
     public boolean doMaze (char[][] maze, int row, int col) {
