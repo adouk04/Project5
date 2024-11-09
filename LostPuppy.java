@@ -14,6 +14,7 @@ public class LostPuppy {
         }
 
     }
+    //
 
     public static char[][] getMaze(Scanner input) {
         List<String> lines = new ArrayList<>();
